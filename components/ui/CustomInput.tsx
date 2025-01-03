@@ -5,9 +5,11 @@ import { Control, FieldPath} from 'react-hook-form'
 import { z } from 'zod'
 import {authFormSchema} from '@/lib/utils'
 
+// call shema with sign in type to get all form fields
+const formShema = authFormSchema("sign-up");
 interface CustomInput{
-    control: Control<z.infer<typeof authFormSchema>>,
-    name: FieldPath<z.infer<typeof authFormSchema>>,
+    control: Control<z.infer<typeof formShema>>,
+    name: FieldPath<z.infer<typeof formShema>>,
     label: string,
     placeholder: string
 

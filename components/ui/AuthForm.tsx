@@ -28,16 +28,19 @@ const AuthForm = ({type}:{type: string}) => {
     const [user,setUser] =useState(null);
     const [isLoading,setIsLoading] = useState(false);
 
+    // call authFormSchema based on a type sign in or sign up
+    const formSchema = authFormSchema(type);
+
     // 1.Define your form
-    const form = useForm<z.infer<typeof authFormSchema>>({
-        resolver: zodResolver(authFormSchema),
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
         }
     });
 
     // 2. Define a submit handler
-function onSubmit(values: z.infer<typeof authFormSchema>){
+function onSubmit(values: z.infer<typeof formSchema>){
     setIsLoading(true);
     console.log(values);
     setIsLoading(false);
@@ -84,6 +87,45 @@ function onSubmit(values: z.infer<typeof authFormSchema>){
             <>
                  <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        {type === "sign-up" && (
+                            <>
+                                <CustomInput 
+                                control={form.control} 
+                                name="firstName"
+                                label="First Name"
+                                placeholder="Enter your first name"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="lastName"
+                                label="Last Name"
+                                placeholder="Enter your last name"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="address1"
+                                label="Address"
+                                placeholder="Enter your specific address"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="state"
+                                label="State/Prefecture"
+                                placeholder="Example: NY,Tokyo"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="postalCode"
+                                label="Postal Code"
+                                placeholder="Example: 11101"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="dateOfBirth"
+                                label="Date of Birth"
+                                placeholder="YYYY-MM-DD"/>
+                                <CustomInput 
+                                control={form.control} 
+                                name="ssn"
+                                label="SSN"
+                                placeholder="Example: 1234"/>
+                            </>
+                        )}
                         {/* Email */}
                         <CustomInput 
                         control={form.control} 
