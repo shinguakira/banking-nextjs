@@ -4,7 +4,7 @@ import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-li
 import { useRouter } from 'next/navigation';
 import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
 
-const PlaidLink:React.FC<PlaidLinkProps> = ({user,variant}) => {
+const PlaidLink = ({user,variant}:PlaidLinkProps) => {
     
     const router = useRouter();
     const [token , setToken] = useState<string | undefined>("");
@@ -38,7 +38,7 @@ const PlaidLink:React.FC<PlaidLinkProps> = ({user,variant}) => {
         {variant === "primary" ? (
             <Button
                 onClick={()=> open()}
-                disabled={!ready}
+                disabled={ready}
                 className="plaidlink-primary">
                 Connect bank 
             </Button>
