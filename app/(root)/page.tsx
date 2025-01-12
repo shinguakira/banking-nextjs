@@ -3,15 +3,23 @@ import HeaderBox from '@/components/ui/HeaderBox';
 import { getUserInfo ,getLoggedInUser} from '@/lib/actions/user.actions';
 import TotalBalanceBox from '@/components/ui/TotalBalanceBox';
 import RightSidebar from '@/components/ui/RightSidebar';
+// import { getAccounts } from '@/lib/actions/bank.actions';
 
 export const Home = async( ) => {
   // const currentPage = Number(page as string) || 1;// set first page as default
-  const loggedIn = {firstName: "Adrian", 
-    lastName:"JSM",
-    email:"contact@akirashingu.com"};
-  // const accounts = await getAccountTypeColors({
-  //   userId: loggedIn.$id
+  // const loggedIn = {firstName: "Adrian", 
+  //   lastName:"JSM",
+  //   email:"contact@akirashingu.com"};
+  const loggedIn = await getLoggedInUser();
+  // const accounts = await getAccounts({
+  //   userId: loggedIn?.$id
   // });
+  if(!accounts) return;
+
+  const accountsData =accounts?.data;
+  const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
+
+  // const account = await getAccounts({appwriteItemId});
   return (
     <section className="home">
       <div className="home-content">
@@ -23,9 +31,9 @@ export const Home = async( ) => {
             subtext="Access and manage your account nad transactions efficiently"
             />
             <TotalBalanceBox 
-              accounts={[]}
-              totalBanks={0}
-              totalCurrentBalance={0}
+              accounts={accountsData}
+              totalBanks={accounts?.totalBanks}
+              totalCurrentBalance={accounts?.totalCurrentBalance}
             />
         </header>
 
