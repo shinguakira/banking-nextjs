@@ -4,8 +4,7 @@ import { encryptId, extractCustomerIdFromUrl, parseStringify } from '../utils';
 import {createAdminClient,createSessionClient}from "../appwrite";
 import { cookies } from "next/headers";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
-import { Languages } from "lucide-react";
-import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
+import { CountryCode, LinkTokenCreateRequest, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid";
 import { revalidatePath } from "next/cache";
 
@@ -80,7 +79,9 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
             DATABASE_ID!,
             USER_COLLECTION_ID!,
             newUserAccount.$id,
-            {
+            {   
+                client_id: process.env.PLAID_CLIENT_ID!,
+                secret: process.env.PLAID_SECRET,
                 ...userData,
                 userId: newUserAccount.$id,
                 dwollaCustomerUrl,
@@ -136,7 +137,7 @@ export const createBankAccount = async({
     accountId,
     accessToken,
     fundingSourceUrl,
-    sharableId,
+    shareableId,
 }: createBankAccountProps) =>{
     try{
         const {database} = await createAdminClient();
@@ -145,15 +146,16 @@ export const createBankAccount = async({
             DATABASE_ID!,
             BANK_COLLECTION_ID!,
             ID.unique(),
-            {
+            {   
                 userId,
                 bankId,
                 accountId,
                 accessToken,
                 fundingSourceUrl,
-                sharableId,
+                shareableId,
             }
         )
+        console.log("asdfasdfa"+bankAccount);
         return parseStringify(bankAccount);
     }catch(error){
         console.log(error);
@@ -163,7 +165,7 @@ export const createBankAccount = async({
 export const getBank = async({documentId}: getBankProps) => {
     try{
         const {database} = await createAdminClient();
-
+        console.log("documentIddddd" + documentId);
         const bank = await database.listDocuments(
             DATABASE_ID!,
             BANK_COLLECTION_ID!,
@@ -190,19 +192,38 @@ export const getBanks = async ({userId}:getBanksProps) =>{
         console.log(error);
     }
 }
+export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) => {
+    try{
+        const {database} = await createAdminClient();
+
+        const bank = await database.listDocuments(
+            DATABASE_ID!,
+            BANK_COLLECTION_ID!,
+            [Query.equal("accountId",[accountId])]
+        );
+        if(bank.total !== 1) return null;
+
+        return parseStringify(bank.documents[0]);
+    }catch(error){
+        console.log(error);
+    }
+}
 
 export const createLinkToken = async(user: User)=>{
     try{
-        const tokenParams = {
+        const tokenParams: LinkTokenCreateRequest = {
+            client_id: process.env.PLAID_CLIENT_ID!,
+            secret: process.env.PLAID_SECRET,
             user: {
                 client_user_id: user.$id
             },
             client_name: `${user.firstName} ${user.lastName}`,
-            products: ["auth"] as Products[],
-            Language: "en",
-            country_codes: ["US"] as CountryCode[],
-        }
+            products: ['auth',"transactions"] as Products[],
+            language: 'en',
+            country_codes: ['US'] as CountryCode[],
+        };
         const response = await plaidClient.linkTokenCreate(tokenParams);
+        console.log(response);
         return parseStringify({linkToken: response.data.link_token});
     }catch(error){
         console.log(error);
@@ -213,6 +234,9 @@ export const exchangePublicToken = async({
     publicToken,
     user,
 }: exchangePublicTokenProps) => {
+    if (!publicToken) {
+        throw new Error("Invalid publicToken");
+    }
     try{
         // Exchange public token for access token and item ID
         const response = await plaidClient.itemPublicTokenExchange({
@@ -255,7 +279,7 @@ export const exchangePublicToken = async({
             accountId: accountData.account_id,
             accessToken,
             fundingSourceUrl,
-            sharableId: encryptId(accountData.account_id),
+            shareableId: encryptId(accountData.account_id),
         });
 
         // Revalidate the path to reflect the changes

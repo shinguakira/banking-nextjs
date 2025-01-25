@@ -3,15 +3,21 @@ import { Button } from './button';
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
 import { useRouter } from 'next/navigation';
 import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
+import Image from 'next/image';
 
 const PlaidLink = ({user,variant}:PlaidLinkProps) => {
     
     const router = useRouter();
-    const [token , setToken] = useState<string | undefined>("");
+    const [token , setToken] = useState<string | null>("");
     
     useEffect(() =>{
         const getLinkToken = async() => {
+            console.log(user);
             const data = await createLinkToken(user);
+            if(data?.linkToken === undefined){
+                console.log(data);
+                return;
+            }
             setToken(data?.linkToken);
             
         }
@@ -38,19 +44,36 @@ const PlaidLink = ({user,variant}:PlaidLinkProps) => {
         {variant === "primary" ? (
             <Button
                 onClick={()=> open()}
-                disabled={ready}
+                disabled={!ready}
                 className="plaidlink-primary">
                 Connect bank 
             </Button>
         ): variant === "ghost" ?(
             <Button 
+                onClick= {() => open()}
+                variant="ghost"
                 className = "plaidlink-ghost">
-                Connect bank
+                <Image 
+                    src="/icons/connect-bank.svg"
+                    alt="connect bank" 
+                    width={24}
+                    height={24}
+                />
+                <p className="hidden text-[16px] font-semibold text-black-2 xl:block">
+                    Connect bank
+                </p>
             </Button>
         ):(
             <Button
-                className="plaidlink-">
-                Connect bank
+                onClick= {() => open()}
+                className="plaidlink-default">
+                <Image 
+                    src="/icons/connect-bank.svg"
+                    alt="connect bank" 
+                    width={24}
+                    height={24}
+                />
+                <p className="text-[16px] font-semibold text-black-2">Connect bank</p>
             </Button>
         )}
     </>

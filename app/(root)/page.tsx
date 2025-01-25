@@ -1,6 +1,6 @@
 import React from 'react'
 import HeaderBox from '@/components/ui/HeaderBox';
-import { getUserInfo ,getLoggedInUser} from '@/lib/actions/user.actions';
+import { getLoggedInUser} from '@/lib/actions/user.actions';
 import TotalBalanceBox from '@/components/ui/TotalBalanceBox';
 import RightSidebar from '@/components/ui/RightSidebar';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
@@ -18,10 +18,6 @@ export const Home = async({searchParams: {id, page}}:SearchParamProps ) => {
   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
 
   const account = await getAccount({ appwriteItemId});
-  console.log(
-    account,
-    accountsData
-  )
 
   return (
     <section className="home">

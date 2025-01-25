@@ -3,6 +3,8 @@ import Link from 'next/link'
 import React from 'react'
 import { BankTabItem } from './BankTabItem';
 import TransactionsTable from './TransactionsTable';
+import BankInfo from "./BankInfo";
+import { Pagination } from './Pagination';
 
 const RecentTransactions = ({accounts,transactions=[],appwriteItemId,page=1}:RecentTransactionsProps) => {
   const rowsPerPage = 10;
@@ -25,16 +27,16 @@ const RecentTransactions = ({accounts,transactions=[],appwriteItemId,page=1}:Rec
         </header>
         <Tabs defaultValue={appwriteItemId} className="w-full">
           <TabsList className="recent-transactions-tablist">
-            {accounts.map((account: Account) => {
+            {accounts.map((account: Account) => (
               <TabsTrigger key={account.id} value={account.appwriteItemId}>
                 <BankTabItem 
                 key={account.id}
                 account={account} 
                 appwriteItemId={appwriteItemId}/>
               </TabsTrigger>
-            })}
+            ))}
           </TabsList>
-          {accounts.map((account: Account)=>{
+          {accounts.map((account: Account)=>(
             <TabsContent
             value={account.appwriteItemId}
             key={account.id}
@@ -45,9 +47,15 @@ const RecentTransactions = ({accounts,transactions=[],appwriteItemId,page=1}:Rec
                 appwriteItemId={appwriteItemId}
                 type="full"
               />
-              <TransactionsTable transactions={}/>
+              <TransactionsTable transactions={currentTransactions}/>
+              {totalPages > 1 &&(
+                <div className="my-4 w-full">
+                  <Pagination totalPages={totalPages} page={page}/>
+                </div>
+                )
+              }
             </TabsContent>
-          })}
+          ))}
           <TabsContent value="account">Make changes to your account here.</TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
