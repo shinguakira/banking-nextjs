@@ -1,7 +1,8 @@
-import HeaderBox from '@/components/ui/HeaderBox'
+import HeaderBox from '@/components/HeaderBox'
 import { getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import React from 'react'
+import BankCard from "@/components/BankCard"
 
 const MyBanks = async() => {
   const loggedIn = await getLoggedInUser();
@@ -9,8 +10,8 @@ const MyBanks = async() => {
     userId: loggedIn.$id
   })
   return (
-    <section>
-      <div className="flex">
+    <section className="flex">
+      <div className="my-banks">
         <HeaderBox
           title="My Banks"
           subtext="Effortlessly manage your banking activites."

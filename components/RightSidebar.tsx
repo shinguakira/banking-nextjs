@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import BankCard from './BankCard'
 import { countTransactionCategories } from '@/lib/utils';
+import Category from './Category';
 
 function RightSidebar({user,transactions,banks}:RightSidebarProps) {
     const categories: CategoryCount[] = countTransactionCategories(transactions);
@@ -59,8 +60,8 @@ function RightSidebar({user,transactions,banks}:RightSidebarProps) {
                             Top categories
                         </h2>
                         <div className="space-y-5">
-                            {categories,map((category, index)=>{
-                                <Category  key={category.name} category={category} />
+                            {categories.map((category)=>{
+                                return <Category  key={category.name} category={category} />
                             })}
                         </div>
                     </div>

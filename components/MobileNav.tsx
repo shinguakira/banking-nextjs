@@ -1,7 +1,7 @@
 "use client";
 import React from 'react'
 import Image from 'next/image'
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "./sheet"
+import { Sheet, SheetTrigger, SheetContent, SheetClose } from "./ui/sheet"
 import Link from 'next/link'
 import { sidebarLinks } from '@/constants'
 import { cn } from '@/lib/utils'

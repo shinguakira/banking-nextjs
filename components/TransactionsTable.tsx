@@ -1,6 +1,6 @@
 import { Table } from 'lucide-react'
 import React from 'react'
-import { TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from './table'
+import { TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from './ui/table'
 import { cn, formatAmount, formatDateTime, removeSpecialCharacters } from '@/lib/utils'
 import { transactionCategoryStyles } from '@/constants';
 

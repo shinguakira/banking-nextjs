@@ -57,7 +57,7 @@ function BankCard({account,userName,showBalance=true}:CreditCardProps) {
                     className="absolute top-0 left-0"
             />
         </Link>
-        {showBalance && <Copy title={account?.sharableId}/>}
+        {showBalance && <Copy title={account?.shareableId}/>}
     </div>
   )
 }

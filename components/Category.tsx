@@ -2,7 +2,7 @@ import { topCategoryStyles } from '@/constants'
 import { cn } from '@/lib/utils';
 import React from 'react'
 import Image from "next/image";
-import { Progress } from './progress';
+import { Progress } from './ui/progress';
 
 const Category = ({category}:CategoryProps) => {
     const {

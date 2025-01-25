@@ -80,8 +80,8 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
             USER_COLLECTION_ID!,
             newUserAccount.$id,
             {   
-                client_id: process.env.PLAID_CLIENT_ID!,
-                secret: process.env.PLAID_SECRET,
+                // client_id: process.env.PLAID_CLIENT_ID!,
+                // secret: process.env.PLAID_SECRET,
                 ...userData,
                 userId: newUserAccount.$id,
                 dwollaCustomerUrl,
@@ -223,7 +223,7 @@ export const createLinkToken = async(user: User)=>{
             country_codes: ['US'] as CountryCode[],
         };
         const response = await plaidClient.linkTokenCreate(tokenParams);
-        console.log(response);
+        console.log("createLinkTOkenSucess"+response);
         return parseStringify({linkToken: response.data.link_token});
     }catch(error){
         console.log(error);
