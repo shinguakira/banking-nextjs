@@ -11,7 +11,7 @@ function TotalBalanceBox({
         <div className="total-balance-chart">
             <DoughnutChart accounts={accounts} />
         </div>
-        <div className='flex flex-coll gap=6'>
+        <div className='flex flex-col gap=6'>
             <h2 className='hader-2'>
                 Bank Accounts: {totalBanks}
             </h2>
@@ -19,8 +19,8 @@ function TotalBalanceBox({
                 <p className="total-balance-label">
                     Total Current Balance
                 </p>
-                <div className="total-balance-amout flex-center gap-2">
-                    <AnimatedCounter amount={100}/>
+                <div className="total-balance-amount flex-center gap-2">
+                    <AnimatedCounter amount={totalCurrentBalance}/>
                     {formatAmount(totalCurrentBalance)}
                 </div>
             </div>
