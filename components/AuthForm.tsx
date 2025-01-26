@@ -16,6 +16,8 @@ import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { signIn, signUp } from '@/lib/actions/user.actions';
+import PlaidLink from './PlaidLink';
 
 
 
@@ -32,6 +34,16 @@ const AuthForm = ({type}:{type: string}) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            address1: "",
+            city: "",
+            state: "",
+            postalCode: "",
+            dateOfBirth: "",
+            ssn: "",
+            
         }
     });
 
@@ -41,17 +53,31 @@ const AuthForm = ({type}:{type: string}) => {
         try{
             // Sign up with Appwrite & create plaid token
             if(type === "sign-up"){
-                // const newUser = await signUp(data);
-                // setUser(newUser);
+                const userData = {
+                    firstName: data.firstName!,
+                    lastName: data.lastName!,
+                    address1: data.address1!,
+                    city: data.city!,
+                    state: data.state!,
+                    postalCode: data.postalCode!,
+                    dateOfBirth: data.dateOfBirth!,
+                    ssn: data.ssn!,
+                    email: data.email,
+                    password: data.password
+                }
+                const newUser = await signUp(userData);
+                setUser(newUser);
+                console.log(user);
             }
             if(type === "sign-in"){
-                // const response = await signIn({
-                //     emai: data.email,
-                //     password: data.password,
-                // });
-                // if(response) router.push("/");
+                const response = await signIn({
+                    email: data.email,
+                    password: data.password,
+                });
+                if(response) router.push("/");
             }
             console.log(data);
+            console.log(type);
         }catch(error){
             console.log(error);
         }finally{
@@ -94,7 +120,7 @@ const AuthForm = ({type}:{type: string}) => {
         </header>
         {user ? (
             <div className="flex flex-col gap-4">
-                {/* PlaidLink */}
+                <PlaidLink user={user} variant="primary"/>
             </div>
         ):(
             <>
@@ -193,7 +219,7 @@ const AuthForm = ({type}:{type: string}) => {
                             </Link>
                 </footer>
             </>
-        )}
+         )}
     </section>
   )
 }
