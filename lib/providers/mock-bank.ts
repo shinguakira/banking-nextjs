@@ -39,7 +39,7 @@ export const mockGetAccounts = async ({ userId }: { userId: string }) => {
         type: account.type,
         subtype: account.subtype,
         appwriteItemId: bank.$id,
-        sharaebleId: bank.shareableId,
+        shareableId: bank.shareableId,
       };
     }).filter(Boolean);
 

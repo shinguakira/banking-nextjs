@@ -105,11 +105,7 @@ export const createTransfer = async ({
   amount,
 }: TransferParams) => {
   if (isMockMode()) {
-    return mockCreateTransfer({
-      sourceFundingSourceUrl,
-      destinationFundingSourceUrl,
-      amount,
-    });
+    return mockCreateTransfer();
   }
   
   try {
