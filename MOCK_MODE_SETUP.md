@@ -1,38 +1,33 @@
-# Mock Mode Setup Guide
+# Mock Data Setup Guide
 
 ## Overview
 
-This application now supports running independently without external API services (Appwrite, Plaid, Dwolla). All data is simulated using in-memory mock data, making it perfect for:
+This application runs entirely on mock data - **no external API services required**. All data is simulated using in-memory mock objects, making it perfect for:
 
 - **Demos and showcases**
 - **Local development** without API keys
 - **Testing UI/UX** without backend dependencies
 - **Offline development**
 
+**Note**: This is NOT a "mode" - all real API/DB code has been completely removed. This app only uses mock data.
+
 ## Quick Start
 
-### 1. Enable Mock Mode
-
-Create a `.env.local` file in the project root:
-
-```bash
-# Enable mock data mode (no external APIs required)
-NEXT_PUBLIC_USE_MOCK_DATA=true
-```
-
-### 2. Install Dependencies
+### 1. Install Dependencies
 
 ```bash
 npm install --legacy-peer-deps
 ```
 
-### 3. Run the Development Server
+### 2. Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-### 4. Access the Application
+**No environment variables needed!** The app runs with mock data out of the box.
+
+### 3. Access the Application
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
