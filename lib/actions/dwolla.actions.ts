@@ -1,137 +1,31 @@
 "use server";
 
-import { Client } from "dwolla-v2";
-import { isMockMode } from "../config";
 import { mockCreateTransfer } from "../providers/mock-transaction";
-
-const getEnvironment = (): "production" | "sandbox" => {
-  const environment = process.env.DWOLLA_ENV as string;
-
-  switch (environment) {
-    case "sandbox":
-      return "sandbox";
-    case "production":
-      return "production";
-    default:
-      throw new Error(
-        "Dwolla environment should either be set to `sandbox` or `production`"
-      );
-  }
-};
-
-// Lazy initialization for Dwolla client
-const getDwollaClient = () => {
-  // Check if mock mode first
-  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return null;
-  }
-  
-  return new Client({
-    environment: getEnvironment(),
-    key: process.env.DWOLLA_KEY as string,
-    secret: process.env.DWOLLA_SECRET as string,
-  });
-};
 
 // Create a Dwolla Funding Source using a Plaid Processor Token
 export const createFundingSource = async (
-  options: CreateFundingSourceOptions
+  _options: CreateFundingSourceOptions
 ) => {
-  if (isMockMode()) {
-    // Return a mock funding source URL
-    return `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`;
-  }
-  
-  try {
-    const client = getDwollaClient();
-    if (!client) throw new Error("Dwolla client not initialized");
-    
-    return await client
-      .post(`customers/${options.customerId}/funding-sources`, {
-        name: options.fundingSourceName,
-        plaidToken: options.plaidToken,
-      })
-      .then((res) => res.headers.get("location"));
-  } catch (err) {
-    console.error("Creating a Funding Source Failed: ", err);
-  }
+  // Return a mock funding source URL
+  return `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`;
 };
 
 export const createOnDemandAuthorization = async () => {
-  if (isMockMode()) {
-    // Return mock auth links
-    return {
-      self: { href: "https://api-sandbox.dwolla.com/on-demand-authorizations/mock" },
-    };
-  }
-  
-  try {
-    const client = getDwollaClient();
-    if (!client) throw new Error("Dwolla client not initialized");
-    
-    const onDemandAuthorization = await client.post(
-      "on-demand-authorizations"
-    );
-    const authLink = onDemandAuthorization.body._links;
-    return authLink;
-  } catch (err) {
-    console.error("Creating an On Demand Authorization Failed: ", err);
-  }
+  // Return mock auth links
+  return {
+    self: { href: "https://api-sandbox.dwolla.com/on-demand-authorizations/mock" },
+  };
 };
 
 export const createDwollaCustomer = async (
-  newCustomer: NewDwollaCustomerParams
+  _newCustomer: NewDwollaCustomerParams
 ) => {
-  if (isMockMode()) {
-    // Return a mock customer URL
-    return `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`;
-  }
-  
-  try {
-    const client = getDwollaClient();
-    if (!client) throw new Error("Dwolla client not initialized");
-    
-    return await client
-      .post("customers", newCustomer)
-      .then((res) => res.headers.get("location"));
-  } catch (err) {
-    console.error("Creating a Dwolla Customer Failed: ", err);
-  }
+  // Return a mock customer URL
+  return `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`;
 };
 
-export const createTransfer = async ({
-  sourceFundingSourceUrl,
-  destinationFundingSourceUrl,
-  amount,
-}: TransferParams) => {
-  if (isMockMode()) {
-    return mockCreateTransfer();
-  }
-  
-  try {
-    const client = getDwollaClient();
-    if (!client) throw new Error("Dwolla client not initialized");
-    
-    const requestBody = {
-      _links: {
-        source: {
-          href: sourceFundingSourceUrl,
-        },
-        destination: {
-          href: destinationFundingSourceUrl,
-        },
-      },
-      amount: {
-        currency: "USD",
-        value: amount,
-      },
-    };
-    return await client
-      .post("transfers", requestBody)
-      .then((res) => res.headers.get("location"));
-  } catch (err) {
-    console.error("Transfer fund failed: ", err);
-  }
+export const createTransfer = async (_params: TransferParams) => {
+  return mockCreateTransfer();
 };
 
 export const addFundingSource = async ({
@@ -139,19 +33,15 @@ export const addFundingSource = async ({
   processorToken,
   bankName,
 }: AddFundingSourceParams) => {
-  try {
-    // create dwolla auth link
-    const dwollaAuthLinks = await createOnDemandAuthorization();
+  // create dwolla auth link
+  const dwollaAuthLinks = await createOnDemandAuthorization();
 
-    // add funding source to the dwolla customer & get the funding source url
-    const fundingSourceOptions = {
-      customerId: dwollaCustomerId,
-      fundingSourceName: bankName,
-      plaidToken: processorToken,
-      _links: dwollaAuthLinks,
-    };
-    return await createFundingSource(fundingSourceOptions);
-  } catch (err) {
-    console.error("Transfer fund failed: ", err);
-  }
+  // add funding source to the dwolla customer & get the funding source url
+  const fundingSourceOptions = {
+    customerId: dwollaCustomerId,
+    fundingSourceName: bankName,
+    plaidToken: processorToken,
+    _links: dwollaAuthLinks,
+  };
+  return await createFundingSource(fundingSourceOptions);
 };
