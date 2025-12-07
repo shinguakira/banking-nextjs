@@ -1,6 +1,8 @@
 "use server";
 
 import { Client } from "dwolla-v2";
+import { useMockData } from "../config";
+import { mockCreateTransfer } from "../providers/mock-transaction";
 
 const getEnvironment = (): "production" | "sandbox" => {
   const environment = process.env.DWOLLA_ENV as string;
@@ -17,18 +19,28 @@ const getEnvironment = (): "production" | "sandbox" => {
   }
 };
 
-const dwollaClient = new Client({
-  environment: getEnvironment(),
-  key: process.env.DWOLLA_KEY as string,
-  secret: process.env.DWOLLA_SECRET as string,
-});
+let dwollaClient: Client | null = null;
+
+// Only initialize if not in mock mode
+if (!useMockData()) {
+  dwollaClient = new Client({
+    environment: getEnvironment(),
+    key: process.env.DWOLLA_KEY as string,
+    secret: process.env.DWOLLA_SECRET as string,
+  });
+}
 
 // Create a Dwolla Funding Source using a Plaid Processor Token
 export const createFundingSource = async (
   options: CreateFundingSourceOptions
 ) => {
+  if (useMockData()) {
+    // Return a mock funding source URL
+    return `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`;
+  }
+  
   try {
-    return await dwollaClient
+    return await dwollaClient!
       .post(`customers/${options.customerId}/funding-sources`, {
         name: options.fundingSourceName,
         plaidToken: options.plaidToken,
@@ -40,8 +52,15 @@ export const createFundingSource = async (
 };
 
 export const createOnDemandAuthorization = async () => {
+  if (useMockData()) {
+    // Return mock auth links
+    return {
+      self: { href: "https://api-sandbox.dwolla.com/on-demand-authorizations/mock" },
+    };
+  }
+  
   try {
-    const onDemandAuthorization = await dwollaClient.post(
+    const onDemandAuthorization = await dwollaClient!.post(
       "on-demand-authorizations"
     );
     const authLink = onDemandAuthorization.body._links;
@@ -54,8 +73,13 @@ export const createOnDemandAuthorization = async () => {
 export const createDwollaCustomer = async (
   newCustomer: NewDwollaCustomerParams
 ) => {
+  if (useMockData()) {
+    // Return a mock customer URL
+    return `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`;
+  }
+  
   try {
-    return await dwollaClient
+    return await dwollaClient!
       .post("customers", newCustomer)
       .then((res) => res.headers.get("location"));
   } catch (err) {
@@ -68,6 +92,14 @@ export const createTransfer = async ({
   destinationFundingSourceUrl,
   amount,
 }: TransferParams) => {
+  if (useMockData()) {
+    return mockCreateTransfer({
+      sourceFundingSourceUrl,
+      destinationFundingSourceUrl,
+      amount,
+    });
+  }
+  
   try {
     const requestBody = {
       _links: {
@@ -83,7 +115,7 @@ export const createTransfer = async ({
         value: amount,
       },
     };
-    return await dwollaClient
+    return await dwollaClient!
       .post("transfers", requestBody)
       .then((res) => res.headers.get("location"));
   } catch (err) {

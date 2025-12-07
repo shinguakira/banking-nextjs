@@ -7,6 +7,22 @@ import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 import { CountryCode, LinkTokenCreateRequest, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid";
 import { revalidatePath } from "next/cache";
+import { useMockData } from "../config";
+import {
+    mockGetUserInfo,
+    mockSignIn,
+    mockSignUp,
+    mockGetLoggedInUser,
+    mockLogout,
+    mockCreateLinkToken,
+    mockExchangePublicToken,
+} from "../providers/mock-auth";
+import {
+    mockGetBank,
+    mockGetBanks,
+    mockGetBankByAccountId,
+    mockCreateBankAccount,
+} from "../providers/mock-bank";
 
 const {
     APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -15,6 +31,10 @@ const {
 }= process.env;
 
 export const getUserInfo = async({userId}:getUserInfoProps) =>{
+    if (useMockData()) {
+        return mockGetUserInfo({ userId });
+    }
+    
     try{
         const {database} = await createAdminClient();
 
@@ -30,6 +50,10 @@ export const getUserInfo = async({userId}:getUserInfoProps) =>{
 }
 
 export const signIn = async({email ,password}: signInProps) => {
+    if (useMockData()) {
+        return mockSignIn({ email, password });
+    }
+    
     try{
         const {account} = await createAdminClient();
         const session = await account.createEmailPasswordSession(email,password);
@@ -50,6 +74,10 @@ export const signIn = async({email ,password}: signInProps) => {
 }
 
 export const signUp = async ({password, ...userData}: SignUpParams) => {
+    if (useMockData()) {
+        return mockSignUp({ password, ...userData });
+    }
+    
     const {email, firstName, lastName} = userData;
 
     let newUserAccount;
@@ -106,6 +134,10 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
 
 
 export async function getLoggedInUser () {
+    if (useMockData()) {
+        return mockGetLoggedInUser();
+    }
+    
     try{
         const {account} = await createSessionClient();
         const result = await account.get();
@@ -120,6 +152,10 @@ export async function getLoggedInUser () {
 }
 
 export const logoutAccount = async() => {
+    if (useMockData()) {
+        return mockLogout();
+    }
+    
     try{
         const {account} = await createSessionClient();
 
@@ -139,6 +175,17 @@ export const createBankAccount = async({
     fundingSourceUrl,
     shareableId,
 }: createBankAccountProps) =>{
+    if (useMockData()) {
+        return mockCreateBankAccount({
+            userId,
+            bankId,
+            accountId,
+            accessToken,
+            fundingSourceUrl,
+            shareableId,
+        });
+    }
+    
     try{
         const {database} = await createAdminClient();
 
@@ -163,6 +210,10 @@ export const createBankAccount = async({
 }
 
 export const getBank = async({documentId}: getBankProps) => {
+    if (useMockData()) {
+        return mockGetBank({ documentId });
+    }
+    
     try{
         const {database} = await createAdminClient();
         console.log("documentIddddd" + documentId);
@@ -179,6 +230,10 @@ export const getBank = async({documentId}: getBankProps) => {
 }
 
 export const getBanks = async ({userId}:getBanksProps) =>{
+    if (useMockData()) {
+        return mockGetBanks({ userId });
+    }
+    
     try{
         const {database} = await createAdminClient();
 
@@ -193,6 +248,10 @@ export const getBanks = async ({userId}:getBanksProps) =>{
     }
 }
 export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) => {
+    if (useMockData()) {
+        return mockGetBankByAccountId({ accountId });
+    }
+    
     try{
         const {database} = await createAdminClient();
 
@@ -210,6 +269,10 @@ export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) =>
 }
 
 export const createLinkToken = async(user: User)=>{
+    if (useMockData()) {
+        return mockCreateLinkToken(user);
+    }
+    
     try{
         const tokenParams: LinkTokenCreateRequest = {
             client_id: process.env.PLAID_CLIENT_ID!,
@@ -234,6 +297,10 @@ export const exchangePublicToken = async({
     publicToken,
     user,
 }: exchangePublicTokenProps) => {
+    if (useMockData()) {
+        return mockExchangePublicToken({ publicToken, user });
+    }
+    
     if (!publicToken) {
         throw new Error("Invalid publicToken");
     }

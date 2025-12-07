@@ -9,9 +9,20 @@ import { parseStringify } from "../utils";
 
 import {  getTransactionsByBankId } from "./transactions.actions";
 import { getBanks, getBank } from "./user.actions";
+import { useMockData } from "../config";
+import {
+  mockGetAccounts,
+  mockGetAccount,
+  mockGetInstitution,
+  mockGetTransactions,
+} from "../providers/mock-bank";
 
 // Get multiple bank accounts
 export const getAccounts = async ({ userId }: getAccountsProps) => {
+  if (useMockData()) {
+    return mockGetAccounts({ userId });
+  }
+  
   try {
     // get banks from db
     const banks = await getBanks({ userId }) as Bank[] | undefined;
@@ -68,6 +79,10 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 
 // Get one bank account
 export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
+  if (useMockData()) {
+    return mockGetAccount({ appwriteItemId });
+  }
+  
   try {
     // get bank from db
     const bank = await getBank({ documentId: appwriteItemId });
@@ -141,6 +156,10 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
 export const getInstitution = async ({
   institutionId,
 }: getInstitutionProps) => {
+  if (useMockData()) {
+    return mockGetInstitution({ institutionId });
+  }
+  
   try {
     const institutionResponse = await plaidClient.institutionsGetById({
       institution_id: institutionId,
@@ -159,6 +178,10 @@ export const getInstitution = async ({
 export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
+  if (useMockData()) {
+    return mockGetTransactions({ accessToken });
+  }
+  
   let hasMore = true;
   let transactions: any = [];
 
