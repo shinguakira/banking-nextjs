@@ -10,12 +10,20 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
-  id-token: write   # ← これを追加
+  id-token: write
 
 jobs:
   claude:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. リポジトリの中身をチェックアウト（これ超重要）
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 念のため全履歴
+
+      # 2. Claude Code アクション
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}  # 明示的に渡す
