@@ -1,7 +1,7 @@
 import { ID, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite";
 import { parseStringify } from "../utils";
-import { useMockData } from "../config";
+import { isMockMode } from "../config";
 import {
     mockCreateTransaction,
     mockGetTransactionsByBankId,
@@ -12,7 +12,7 @@ const {
     APPWRITE_TRANSACTION_COLLECTION_ID: TRANSACTION_COLLECTION_ID,
 }= process.env;
 export const  createTransaction = async(transaction:CreateTransactionProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockCreateTransaction(transaction);
     }
     
@@ -36,7 +36,7 @@ export const  createTransaction = async(transaction:CreateTransactionProps) => {
 }
 
 export const  getTransactionsByBankId = async({bankId}:getTransactionsByBankIdProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetTransactionsByBankId({ bankId });
     }
     

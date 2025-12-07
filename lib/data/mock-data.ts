@@ -5,6 +5,8 @@
  * Data includes users, banks, accounts, transactions, and institutions.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const MOCK_USERS = [
   {
     $id: "mock-user-1",

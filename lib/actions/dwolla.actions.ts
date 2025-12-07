@@ -1,7 +1,7 @@
 "use server";
 
 import { Client } from "dwolla-v2";
-import { useMockData } from "../config";
+import { isMockMode } from "../config";
 import { mockCreateTransfer } from "../providers/mock-transaction";
 
 const getEnvironment = (): "production" | "sandbox" => {
@@ -19,28 +19,34 @@ const getEnvironment = (): "production" | "sandbox" => {
   }
 };
 
-let dwollaClient: Client | null = null;
-
-// Only initialize if not in mock mode
-if (!useMockData()) {
-  dwollaClient = new Client({
+// Lazy initialization for Dwolla client
+const getDwollaClient = () => {
+  // Check if mock mode first
+  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
+    return null;
+  }
+  
+  return new Client({
     environment: getEnvironment(),
     key: process.env.DWOLLA_KEY as string,
     secret: process.env.DWOLLA_SECRET as string,
   });
-}
+};
 
 // Create a Dwolla Funding Source using a Plaid Processor Token
 export const createFundingSource = async (
   options: CreateFundingSourceOptions
 ) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     // Return a mock funding source URL
     return `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`;
   }
   
   try {
-    return await dwollaClient!
+    const client = getDwollaClient();
+    if (!client) throw new Error("Dwolla client not initialized");
+    
+    return await client
       .post(`customers/${options.customerId}/funding-sources`, {
         name: options.fundingSourceName,
         plaidToken: options.plaidToken,
@@ -52,7 +58,7 @@ export const createFundingSource = async (
 };
 
 export const createOnDemandAuthorization = async () => {
-  if (useMockData()) {
+  if (isMockMode()) {
     // Return mock auth links
     return {
       self: { href: "https://api-sandbox.dwolla.com/on-demand-authorizations/mock" },
@@ -60,7 +66,10 @@ export const createOnDemandAuthorization = async () => {
   }
   
   try {
-    const onDemandAuthorization = await dwollaClient!.post(
+    const client = getDwollaClient();
+    if (!client) throw new Error("Dwolla client not initialized");
+    
+    const onDemandAuthorization = await client.post(
       "on-demand-authorizations"
     );
     const authLink = onDemandAuthorization.body._links;
@@ -73,13 +82,16 @@ export const createOnDemandAuthorization = async () => {
 export const createDwollaCustomer = async (
   newCustomer: NewDwollaCustomerParams
 ) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     // Return a mock customer URL
     return `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`;
   }
   
   try {
-    return await dwollaClient!
+    const client = getDwollaClient();
+    if (!client) throw new Error("Dwolla client not initialized");
+    
+    return await client
       .post("customers", newCustomer)
       .then((res) => res.headers.get("location"));
   } catch (err) {
@@ -92,7 +104,7 @@ export const createTransfer = async ({
   destinationFundingSourceUrl,
   amount,
 }: TransferParams) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     return mockCreateTransfer({
       sourceFundingSourceUrl,
       destinationFundingSourceUrl,
@@ -101,6 +113,9 @@ export const createTransfer = async ({
   }
   
   try {
+    const client = getDwollaClient();
+    if (!client) throw new Error("Dwolla client not initialized");
+    
     const requestBody = {
       _links: {
         source: {
@@ -115,7 +130,7 @@ export const createTransfer = async ({
         value: amount,
       },
     };
-    return await dwollaClient!
+    return await client
       .post("transfers", requestBody)
       .then((res) => res.headers.get("location"));
   } catch (err) {

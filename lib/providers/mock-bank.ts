@@ -4,6 +4,8 @@
  * Provides bank and account data functionality using mock data instead of Plaid
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { parseStringify } from '../utils';
 import mockState from '../data/mock-state';
 

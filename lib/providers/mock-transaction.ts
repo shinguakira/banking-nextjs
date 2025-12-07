@@ -10,7 +10,7 @@ import mockState from '../data/mock-state';
 /**
  * Create a new transaction (for transfers)
  */
-export const mockCreateTransaction = async (transactionData: any) => {
+export const mockCreateTransaction = async (transactionData: CreateTransactionProps) => {
   try {
     const newTransaction = mockState.createTransferTransaction(transactionData);
     return parseStringify(newTransaction);
@@ -40,11 +40,7 @@ export const mockGetTransactionsByBankId = async ({ bankId }: { bankId: string }
 /**
  * Simulate a transfer between accounts
  */
-export const mockCreateTransfer = async (params: {
-  sourceFundingSourceUrl: string;
-  destinationFundingSourceUrl: string;
-  amount: string;
-}) => {
+export const mockCreateTransfer = async () => {
   try {
     // In mock mode, we just return success
     // The actual balance updates happen in mockSimulateTransfer

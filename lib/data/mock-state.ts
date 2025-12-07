@@ -6,6 +6,8 @@
  * without persisting to a real database.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   MOCK_USERS,
   MOCK_BANKS,

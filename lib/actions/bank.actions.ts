@@ -9,7 +9,7 @@ import { parseStringify } from "../utils";
 
 import {  getTransactionsByBankId } from "./transactions.actions";
 import { getBanks, getBank } from "./user.actions";
-import { useMockData } from "../config";
+import { isMockMode } from "../config";
 import {
   mockGetAccounts,
   mockGetAccount,
@@ -19,7 +19,7 @@ import {
 
 // Get multiple bank accounts
 export const getAccounts = async ({ userId }: getAccountsProps) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     return mockGetAccounts({ userId });
   }
   
@@ -79,7 +79,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 
 // Get one bank account
 export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     return mockGetAccount({ appwriteItemId });
   }
   
@@ -156,7 +156,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
 export const getInstitution = async ({
   institutionId,
 }: getInstitutionProps) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     return mockGetInstitution({ institutionId });
   }
   
@@ -178,11 +178,12 @@ export const getInstitution = async ({
 export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
-  if (useMockData()) {
+  if (isMockMode()) {
     return mockGetTransactions({ accessToken });
   }
   
   let hasMore = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let transactions: any = [];
 
   try {

@@ -7,7 +7,7 @@
 /**
  * Check if the app should use mock data instead of real APIs
  */
-export const useMockData = (): boolean => {
+export const isMockMode = (): boolean => {
   // Check environment variable
   if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
     return true;
@@ -43,7 +43,7 @@ export const useMockData = (): boolean => {
  * Get the current mode (mock or real)
  */
 export const getAppMode = (): 'mock' | 'real' => {
-  return useMockData() ? 'mock' : 'real';
+  return isMockMode() ? 'mock' : 'real';
 };
 
 /**
@@ -61,3 +61,6 @@ export const logConfigMode = () => {
     console.log('   - Using Appwrite, Plaid, and Dwolla');
   }
 };
+
+// Legacy export for backwards compatibility
+export const useMockData = isMockMode;

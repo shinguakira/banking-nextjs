@@ -1,24 +1,9 @@
 import type { Metadata } from "next";
-import {Inter,IBM_Plex_Serif} from "next/font/google";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter"});
-const ibmPlexSerif = IBM_Plex_Serif({
-  subsets: ["latin"],
-  weight: ["400","700"],
-  variable: "--font-ibm-plex-serif"
-})
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Using localFont or fallback to system fonts for environments without internet access
+const inter = { variable: "--font-inter" };
+const ibmPlexSerif = { variable: "--font-ibm-plex-serif" };
 
 export const metadata: Metadata = {
   title: "Horizon",

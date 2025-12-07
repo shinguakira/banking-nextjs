@@ -10,7 +10,7 @@ import mockState from '../data/mock-state';
 /**
  * Sign up a new user
  */
-export const mockSignUp = async (userData: any) => {
+export const mockSignUp = async (userData: SignUpParams) => {
   try {
     // Check if user already exists
     const existingUser = mockState.getUserByEmail(userData.email);
@@ -150,7 +150,7 @@ export const mockLogout = async () => {
 /**
  * Create a mock link token for Plaid
  */
-export const mockCreateLinkToken = async (user: any) => {
+export const mockCreateLinkToken = async (user: User) => {
   try {
     // Return a mock link token
     return parseStringify({
@@ -166,11 +166,10 @@ export const mockCreateLinkToken = async (user: any) => {
  * Exchange public token (mock implementation)
  */
 export const mockExchangePublicToken = async ({
-  publicToken,
   user,
 }: {
   publicToken: string;
-  user: any;
+  user: User;
 }) => {
   try {
     // In mock mode, we just create a new bank account with random data

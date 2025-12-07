@@ -7,7 +7,7 @@ import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 import { CountryCode, LinkTokenCreateRequest, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid";
 import { revalidatePath } from "next/cache";
-import { useMockData } from "../config";
+import { isMockMode } from "../config";
 import {
     mockGetUserInfo,
     mockSignIn,
@@ -31,7 +31,7 @@ const {
 }= process.env;
 
 export const getUserInfo = async({userId}:getUserInfoProps) =>{
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetUserInfo({ userId });
     }
     
@@ -50,7 +50,7 @@ export const getUserInfo = async({userId}:getUserInfoProps) =>{
 }
 
 export const signIn = async({email ,password}: signInProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockSignIn({ email, password });
     }
     
@@ -74,7 +74,7 @@ export const signIn = async({email ,password}: signInProps) => {
 }
 
 export const signUp = async ({password, ...userData}: SignUpParams) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockSignUp({ password, ...userData });
     }
     
@@ -134,7 +134,7 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
 
 
 export async function getLoggedInUser () {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetLoggedInUser();
     }
     
@@ -152,7 +152,7 @@ export async function getLoggedInUser () {
 }
 
 export const logoutAccount = async() => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockLogout();
     }
     
@@ -175,7 +175,7 @@ export const createBankAccount = async({
     fundingSourceUrl,
     shareableId,
 }: createBankAccountProps) =>{
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockCreateBankAccount({
             userId,
             bankId,
@@ -210,7 +210,7 @@ export const createBankAccount = async({
 }
 
 export const getBank = async({documentId}: getBankProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetBank({ documentId });
     }
     
@@ -230,7 +230,7 @@ export const getBank = async({documentId}: getBankProps) => {
 }
 
 export const getBanks = async ({userId}:getBanksProps) =>{
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetBanks({ userId });
     }
     
@@ -248,7 +248,7 @@ export const getBanks = async ({userId}:getBanksProps) =>{
     }
 }
 export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockGetBankByAccountId({ accountId });
     }
     
@@ -269,7 +269,7 @@ export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) =>
 }
 
 export const createLinkToken = async(user: User)=>{
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockCreateLinkToken(user);
     }
     
@@ -297,7 +297,7 @@ export const exchangePublicToken = async({
     publicToken,
     user,
 }: exchangePublicTokenProps) => {
-    if (useMockData()) {
+    if (isMockMode()) {
         return mockExchangePublicToken({ publicToken, user });
     }
     
