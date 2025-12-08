@@ -12,7 +12,7 @@ export const MOCK_USERS = [
     $id: "mock-user-1",
     userId: "mock-user-1",
     email: "demo@banking.com",
-    password: "demo123", // In real app, this would be hashed
+    password: "demo12345", // In real app, this would be hashed
     firstName: "John",
     lastName: "Doe",
     address1: "123 Main Street",
