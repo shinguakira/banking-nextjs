@@ -1,9 +1,7 @@
-name: Claude Code
+name: Claude Code Review
 
 on:
   issue_comment:
-    types: [created]
-  pull_request_review_comment:
     types: [created]
 
 permissions:
@@ -14,16 +12,32 @@ permissions:
 
 jobs:
   claude:
+    if: contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリの中身をチェックアウト（これ超重要）
+      # PR として正しく扱わせるために checkout が必要
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 念のため全履歴
+          fetch-depth: 0
 
-      # 2. Claude Code アクション
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ github.token }}  # 明示的に渡す
+          github_token: ${{ github.token }}
+
+          # Conversation → issue_comment でも PR として扱わせる
+          pr_number: ${{ github.event.issue.number }}
+
+          # 不要なファイル更新ツールを禁止（← これが exit 1 防止の核心）
+          allowed_tools: "Read,LS,Grep,Glob"   # レビューに必要最小限のみ
+
+          # Claude が “編集不可” をエラー扱いしないようにする
+          fail_on_file_update: "false"
+
+          # Claude の応答をレビュー中心に誘導
+          prompt: |
+            You are Claude reviewing a pull request. 
+            Provide high-level code review, comments, and suggestions.
+            Do NOT attempt to write or modify files.
+            Only analyze diff and provide review comments.
