@@ -6,7 +6,9 @@ import RightSidebar from '@/components/RightSidebar';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import RecentTransactions from '@/components/RecentTransactions';
 
-export const Home = async({searchParams: {id, page}}:SearchParamProps ) => {
+const Home = async({searchParams}:SearchParamProps ) => {
+  const resolvedSearchParams = await searchParams;
+  const {id, page} = resolvedSearchParams;
   const currentPage = Number(page as string) || 1;// set first page as default
   const loggedIn = await getLoggedInUser();
   

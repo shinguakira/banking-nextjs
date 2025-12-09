@@ -6,26 +6,28 @@ import { getLoggedInUser } from '@/lib/actions/user.actions';
 import { formatAmount } from '@/lib/utils';
 import React from 'react'
 
-const TransactionHistory = async({searchParams:{id,page}}:SearchParamProps) => {
+const TransactionHistory = async({searchParams}:SearchParamProps) => {
+  const resolvedSearchParams = await searchParams;
+  const {id, page} = resolvedSearchParams;
   const currentPage = Number(page as string) || 1;// set first page as default
     const loggedIn = await getLoggedInUser();
-    
+
     if (!loggedIn) {
       return <div>Please log in to view your transaction history.</div>;
     }
-    
+
     const accounts = await getAccounts({
       userId: loggedIn.$id
     });
     if(!accounts) return;
     const accountsData =accounts?.data;
     const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
-  
+
     const account = await getAccount({ appwriteItemId});
     const rowsPerPage = 10;
-    const totalPages = Math.ceil(currentPage / rowsPerPage);
-    
-    const indexOfLastTransaction = page * rowsPerPage;
+    const totalPages = Math.ceil(account?.transactions.length / rowsPerPage);
+
+    const indexOfLastTransaction = currentPage * rowsPerPage;
     const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
   
     const currentTransactions = account?.transactions.slice(
@@ -61,7 +63,7 @@ const TransactionHistory = async({searchParams:{id,page}}:SearchParamProps) => {
           />
           {totalPages > 1 &&(
                           <div className="my-4 w-full">
-                            <Pagination totalPages={totalPages} page={page}/>
+                            <Pagination totalPages={totalPages} page={currentPage}/>
                           </div>
                           )
                         }

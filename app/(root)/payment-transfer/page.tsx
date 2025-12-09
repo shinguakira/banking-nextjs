@@ -4,7 +4,9 @@ import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import React from 'react'
 
-const PaymentTransfer = async({searchParams:{ id,page}}: SearchParamProps) => {
+const PaymentTransfer = async({searchParams}: SearchParamProps) => {
+  const resolvedSearchParams = await searchParams;
+  const {id, page} = resolvedSearchParams;
   const currentPage = Number(page as string) || 1;
   const loggedIn = await getLoggedInUser();
   
