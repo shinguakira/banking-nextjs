@@ -6,6 +6,11 @@ import BankCard from "@/components/BankCard"
 
 const MyBanks = async() => {
   const loggedIn = await getLoggedInUser();
+  
+  if (!loggedIn) {
+    return <div>Please log in to view your banks.</div>;
+  }
+  
   const accounts = await getAccounts({
     userId: loggedIn.$id
   })

@@ -9,8 +9,13 @@ import RecentTransactions from '@/components/RecentTransactions';
 export const Home = async({searchParams: {id, page}}:SearchParamProps ) => {
   const currentPage = Number(page as string) || 1;// set first page as default
   const loggedIn = await getLoggedInUser();
+  
+  if (!loggedIn) {
+    return <div>Please log in to view your dashboard.</div>;
+  }
+  
   const accounts = await getAccounts({
-    userId: loggedIn?.$id
+    userId: loggedIn.$id
   });
   if(!accounts) return;
 

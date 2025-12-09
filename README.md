@@ -24,10 +24,11 @@
 1. 🤖 [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🕸️ [Code Snippets to Copy](#snippets)
-6. 🔗 [Assets](#links)
-7. 🚀 [More](#more)
+4. 🎭 [Mock Mode (No API Required)](#mock-mode)
+5. 🤸 [Quick Start](#quick-start)
+6. 🕸️ [Code Snippets to Copy](#snippets)
+7. 🔗 [Assets](#links)
+8. 🚀 [More](#more)
 
 ## 🚨 Tutorial
 
@@ -78,9 +79,47 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 and many more, including code architecture and reusability. 
 
-## <a name="quick-start">🤸 Quick Start</a>
+## <a name="mock-mode">🎭 Mock Data Implementation - No APIs Required</a>
 
-Follow these steps to set up the project locally on your machine.
+**This application runs entirely on mock data with NO external API dependencies!**
+
+All real API/DB code has been completely removed. This is a pure mock data implementation.
+
+Perfect for:
+- 🎬 **Demos and Showcases** - Zero setup needed
+- 💻 **Local Development** - Work offline
+- 🧪 **Testing UI/UX** - Frontend-only focus
+- 🚀 **Instant Setup** - Running in seconds
+
+### Quick Start
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd banking-nextjs
+
+# 2. Install dependencies
+npm install --legacy-peer-deps
+
+# 3. Run the app (no .env file needed!)
+npm run dev
+```
+
+### Demo Credentials
+
+```
+Email: demo@banking.com
+Password: demo123
+```
+
+Pre-loaded with 3 bank accounts and 60+ mock transactions!
+
+📖 **Full Documentation**: See [MOCK_MODE_SETUP.md](./MOCK_MODE_SETUP.md) for complete guide  
+📋 **Architecture Report**: See [MIGRATION_REPORT.md](./MIGRATION_REPORT.md) for details
+
+## <a name="quick-start">🤸 Original Setup (Reference Only)</a>
+
+**Note**: The original API integration code has been removed. The sections below are for reference only.
 
 **Prerequisites**
 

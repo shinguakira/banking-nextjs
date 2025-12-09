@@ -1,7 +1,7 @@
 import { Table } from 'lucide-react'
 import React from 'react'
 import { TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from './ui/table'
-import { cn, formatAmount, formatDateTime, removeSpecialCharacters } from '@/lib/utils'
+import { cn, formatAmount, formatDateTime, removeSpecialCharacters, getTransactionStatus } from '@/lib/utils'
 import { transactionCategoryStyles } from '@/constants';
 
 const CategoryBadge = ({category}:CategoryBadgeProps) => {
@@ -41,7 +41,7 @@ const TransactionsTable = ({transactions}: TransactionTableProps) => {
         </TableHeader>
         <TableBody>
             {transactions.map((transaction: Transaction)=>{
-                const status = getTransactionsStatus(new Date(transaction.date));
+                const status = getTransactionStatus(new Date(transaction.date));
                 const amount = formatAmount(transaction.amount);
 
                 const isDebit = transaction.type === "debit";

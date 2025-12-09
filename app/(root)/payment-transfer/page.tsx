@@ -7,6 +7,11 @@ import React from 'react'
 const PaymentTransfer = async({searchParams:{ id,page}}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
   const loggedIn = await getLoggedInUser();
+  
+  if (!loggedIn) {
+    return <div>Please log in to make a payment transfer.</div>;
+  }
+  
   const accounts = await getAccounts({ 
     userId: loggedIn.$id 
   })
