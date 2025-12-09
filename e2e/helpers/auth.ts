@@ -11,7 +11,7 @@ export async function signIn(page: Page): Promise<void> {
 
   // Fill in the demo credentials
   await page.fill('input[name="email"]', 'demo@banking.com');
-  await page.fill('input[name="password"]', 'demo123456');
+  await page.fill('input[name="password"]', 'demo12345');
 
   // Click submit
   const submitButton = page.locator('button:has-text("Sign In")');

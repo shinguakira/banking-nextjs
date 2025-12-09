@@ -87,7 +87,7 @@ test.describe('Sign In Page', () => {
 
     // Fill in the demo credentials from README
     await page.fill('input[name="email"]', 'demo@banking.com');
-    await page.fill('input[name="password"]', 'demo123456');
+    await page.fill('input[name="password"]', 'demo12345');
 
     // Take screenshot before submit
     await page.screenshot({ 
