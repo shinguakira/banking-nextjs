@@ -1,7 +1,7 @@
 /**
  * Mock Authentication Provider
- * 
- * Provides authentication functionality using mock data instead of Appwrite
+ *
+ * Provides authentication functionality using mock data
  */
 
 import { parseStringify } from '../utils';
@@ -30,8 +30,8 @@ export const mockSignUp = async (userData: SignUpParams) => {
       dateOfBirth: userData.dateOfBirth,
       ssn: userData.ssn,
       password: userData.password,
-      dwollaCustomerUrl: `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`,
-      dwollaCustomerId: `mock-${Date.now()}`,
+      dwollaCustomerUrl: ``,
+      dwollaCustomerId: ``,
     });
 
     // Create session
@@ -153,51 +153,5 @@ export const mockLogout = async () => {
   } catch (error) {
     console.error("Mock logout error:", error);
     return false;
-  }
-};
-
-/**
- * Create a mock link token for Plaid
- */
-export const mockCreateLinkToken = async (user: User) => {
-  try {
-    // Return a mock link token
-    return parseStringify({
-      linkToken: `mock-link-token-${user.$id}-${Date.now()}`,
-    });
-  } catch (error) {
-    console.error("Mock create link token error:", error);
-    throw error;
-  }
-};
-
-/**
- * Exchange public token (mock implementation)
- */
-export const mockExchangePublicToken = async ({
-  user,
-}: {
-  publicToken: string;
-  user: User;
-}) => {
-  try {
-    // In mock mode, we just create a new bank account with random data
-    const newBank = mockState.createBank({
-      accountId: `mock-account-${Date.now()}`,
-      bankId: `mock-item-${Date.now()}`,
-      userId: user.$id,
-      accessToken: `mock-access-token-${Date.now()}`,
-      fundingSourceUrl: `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`,
-      shareableId: `mock-sharable-${Date.now()}`,
-      institutionId: "ins_56", // Default to Chase
-    });
-
-    return parseStringify({
-      publicTokenExchange: "complete",
-      bank: newBank,
-    });
-  } catch (error) {
-    console.error("Mock exchange public token error:", error);
-    throw error;
   }
 };
