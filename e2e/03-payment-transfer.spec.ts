@@ -20,7 +20,7 @@ test.describe('Payment Transfer Page', () => {
 
     // Take full page screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/05-payment-transfer-page.png', 
+      path: 'e2e/screenshots/03-payment-transfer-page.png', 
       fullPage: true 
     });
   });
@@ -35,7 +35,7 @@ test.describe('Payment Transfer Page', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/05-payment-transfer-form.png', 
+      path: 'e2e/screenshots/03-payment-transfer-form.png', 
       fullPage: true 
     });
   });
@@ -52,7 +52,7 @@ test.describe('Payment Transfer Page', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/05-payment-transfer-validation-errors.png', 
+      path: 'e2e/screenshots/03-payment-transfer-validation-errors.png', 
       fullPage: true 
     });
   });
@@ -68,7 +68,7 @@ test.describe('Payment Transfer Page', () => {
 
       // Take screenshot with dropdown open
       await page.screenshot({ 
-        path: 'e2e/screenshots/05-payment-transfer-bank-dropdown.png', 
+        path: 'e2e/screenshots/03-payment-transfer-bank-dropdown.png', 
         fullPage: true 
       });
     }
@@ -106,7 +106,7 @@ test.describe('Payment Transfer Page', () => {
 
     // Take screenshot of filled form
     await page.screenshot({ 
-      path: 'e2e/screenshots/05-payment-transfer-filled-form.png', 
+      path: 'e2e/screenshots/03-payment-transfer-filled-form.png', 
       fullPage: true 
     });
   });

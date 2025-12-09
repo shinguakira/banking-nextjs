@@ -20,7 +20,7 @@ test.describe('Transaction History Page', () => {
 
     // Take full page screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/06-transaction-history-page.png', 
+      path: 'e2e/screenshots/04-transaction-history-page.png', 
       fullPage: true 
     });
   });
@@ -30,7 +30,7 @@ test.describe('Transaction History Page', () => {
 
     // Take screenshot of transaction list
     await page.screenshot({ 
-      path: 'e2e/screenshots/06-transaction-history-list.png', 
+      path: 'e2e/screenshots/04-transaction-history-list.png', 
       fullPage: true 
     });
   });
@@ -46,13 +46,13 @@ test.describe('Transaction History Page', () => {
 
       // Take screenshot with dropdown
       await page.screenshot({ 
-        path: 'e2e/screenshots/06-transaction-history-bank-selector.png', 
+        path: 'e2e/screenshots/04-transaction-history-bank-selector.png', 
         fullPage: true 
       });
     } else {
       // Take regular screenshot
       await page.screenshot({ 
-        path: 'e2e/screenshots/06-transaction-history-bank-selector.png', 
+        path: 'e2e/screenshots/04-transaction-history-bank-selector.png', 
         fullPage: true 
       });
     }
@@ -67,7 +67,7 @@ test.describe('Transaction History Page', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/06-transaction-history-details.png', 
+      path: 'e2e/screenshots/04-transaction-history-details.png', 
       fullPage: true 
     });
   });
@@ -81,7 +81,7 @@ test.describe('Transaction History Page', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/06-transaction-history-pagination.png', 
+      path: 'e2e/screenshots/04-transaction-history-pagination.png', 
       fullPage: true 
     });
   });
@@ -102,7 +102,7 @@ test.describe('Transaction History Page', () => {
 
         // Take screenshot of page 2
         await page.screenshot({ 
-          path: 'e2e/screenshots/06-transaction-history-page-2.png', 
+          path: 'e2e/screenshots/04-transaction-history-page-2.png', 
           fullPage: true 
         });
       }

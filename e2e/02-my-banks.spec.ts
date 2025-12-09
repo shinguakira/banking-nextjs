@@ -20,7 +20,7 @@ test.describe('My Banks Page', () => {
 
     // Take full page screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/04-my-banks-page.png', 
+      path: 'e2e/screenshots/02-my-banks-page.png', 
       fullPage: true 
     });
   });
@@ -30,7 +30,7 @@ test.describe('My Banks Page', () => {
 
     // Take screenshot of bank list
     await page.screenshot({ 
-      path: 'e2e/screenshots/04-my-banks-list.png', 
+      path: 'e2e/screenshots/02-my-banks-list.png', 
       fullPage: true 
     });
   });
@@ -44,7 +44,7 @@ test.describe('My Banks Page', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/04-my-banks-details.png', 
+      path: 'e2e/screenshots/02-my-banks-details.png', 
       fullPage: true 
     });
   });
@@ -54,7 +54,7 @@ test.describe('My Banks Page', () => {
 
     // Take screenshot showing balances
     await page.screenshot({ 
-      path: 'e2e/screenshots/04-my-banks-balances.png', 
+      path: 'e2e/screenshots/02-my-banks-balances.png', 
       fullPage: true 
     });
   });

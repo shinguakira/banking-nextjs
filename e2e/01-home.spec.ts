@@ -22,7 +22,7 @@ test.describe('Home Page (Dashboard)', () => {
     
     // Take full page screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/03-home-page.png', 
+      path: 'e2e/screenshots/01-home-page.png', 
       fullPage: true 
     });
   });
@@ -33,7 +33,7 @@ test.describe('Home Page (Dashboard)', () => {
 
     // Take screenshot of the balance section
     await page.screenshot({ 
-      path: 'e2e/screenshots/03-home-balance-section.png', 
+      path: 'e2e/screenshots/01-home-balance-section.png', 
       fullPage: true 
     });
   });
@@ -48,7 +48,7 @@ test.describe('Home Page (Dashboard)', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/03-home-transactions.png', 
+      path: 'e2e/screenshots/01-home-transactions.png', 
       fullPage: true 
     });
   });
@@ -63,7 +63,7 @@ test.describe('Home Page (Dashboard)', () => {
 
     // Take screenshot
     await page.screenshot({ 
-      path: 'e2e/screenshots/03-home-charts.png', 
+      path: 'e2e/screenshots/01-home-charts.png', 
       fullPage: true 
     });
   });
@@ -74,7 +74,7 @@ test.describe('Home Page (Dashboard)', () => {
 
     // Take screenshot with sidebar visible
     await page.screenshot({ 
-      path: 'e2e/screenshots/03-home-with-sidebar.png', 
+      path: 'e2e/screenshots/01-home-with-sidebar.png', 
       fullPage: true 
     });
   });
