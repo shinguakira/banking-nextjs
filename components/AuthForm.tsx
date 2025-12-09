@@ -106,6 +106,13 @@ const AuthForm = ({type}:{type: string}) => {
                             Please enter your details
                         </p>
                     </h1>
+                    {type === "sign-in" && (
+                        <div className="bg-blue-25 border border-blue-500 rounded-lg p-4 mt-2">
+                            <p className="text-14 font-semibold text-blue-700 mb-2">Test Account:</p>
+                            <p className="text-12 text-gray-700">Email: <span className="font-mono font-semibold">demo@banking.com</span></p>
+                            <p className="text-12 text-gray-700">Password: <span className="font-mono font-semibold">demo12345</span></p>
+                        </div>
+                    )}
                 </div>
         </header>
             <>
