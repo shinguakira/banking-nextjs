@@ -5,8 +5,6 @@ import {
     mockSignUp,
     mockGetLoggedInUser,
     mockLogout,
-    mockCreateLinkToken,
-    mockExchangePublicToken,
 } from "../providers/mock-auth";
 import {
     mockGetBank,
@@ -63,15 +61,4 @@ export const getBanks = async ({userId}:getBanksProps) =>{
 }
 export const getBankByAccountId = async({accountId}: getBankByAccountIdProps) => {
     return mockGetBankByAccountId({ accountId });
-}
-
-export const createLinkToken = async(user: User)=>{
-    return mockCreateLinkToken(user);
-};
-
-export const exchangePublicToken = async({
-    publicToken,
-    user,
-}: exchangePublicTokenProps) => {
-    return mockExchangePublicToken({ publicToken, user });
 }

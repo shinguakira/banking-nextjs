@@ -16,13 +16,11 @@ import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/lib/actions/user.actions';
-import PlaidLink from './PlaidLink';
 
 
 
 const AuthForm = ({type}:{type: string}) => {
     const router = useRouter();
-    const [user,setUser] =useState(null);
     const [isLoading,setIsLoading] = useState(false);
 
     // call authFormSchema based on a type sign in or sign up
@@ -50,7 +48,6 @@ const AuthForm = ({type}:{type: string}) => {
     const onSubmit=async(data: z.infer<typeof formSchema>)=>{
         setIsLoading(true);
         try{
-            // Sign up with Appwrite & create plaid token
             if(type === "sign-up"){
                 const userData = {
                     firstName: data.firstName!,
@@ -64,9 +61,8 @@ const AuthForm = ({type}:{type: string}) => {
                     email: data.email,
                     password: data.password
                 }
-                const newUser = await signUp(userData);
-                setUser(newUser);
-                console.log(user);
+                await signUp(userData);
+                router.push("/");
             }
             if(type === "sign-in"){
                 const response = await signIn({
@@ -102,26 +98,16 @@ const AuthForm = ({type}:{type: string}) => {
                 <div className="flex flex-col gap-1 md:gap-3">
                     <h1 className="text-24 lg:text-36
                     font-semibold text-gray-900">
-                        {user
-                        ? "Link Account" 
-                        : type === "sign-in"
+                        {type === "sign-in"
                             ? "Sign In"
                             : "Sign Up"
                         }
                         <p className="text-16 font-normaltext-gray-600">
-                            {user
-                                ? "Link your account to get started"
-                                : "Please enter your details"
-                            }
+                            Please enter your details
                         </p>
                     </h1>
                 </div>
         </header>
-        {user ? (
-            <div className="flex flex-col gap-4">
-                <PlaidLink user={user} variant="primary"/>
-            </div>
-        ):(
             <>
                  <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -218,7 +204,6 @@ const AuthForm = ({type}:{type: string}) => {
                             </Link>
                 </footer>
             </>
-         )}
     </section>
   )
 }

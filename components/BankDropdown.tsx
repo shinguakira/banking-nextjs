@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import {
@@ -12,14 +12,13 @@ import {
   SelectLabel,
   SelectTrigger,
 } from "@/components/ui/select";
-import { formUrlQuery, formatAmount } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 
 export const BankDropdown = ({
   accounts = [],
   setValue,
   otherStyles,
 }: BankDropdownProps) => {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [selected, setSeclected] = useState(accounts[0]);
 
@@ -27,15 +26,12 @@ export const BankDropdown = ({
     const account = accounts.find((account) => account.appwriteItemId === id)!;
 
     setSeclected(account);
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: "id",
-      value: id,
-    });
-    router.push(newUrl, { scroll: false });
 
     if (setValue) {
       setValue("senderBank", id);
+    } else {
+      // Only update URL if setValue is not provided (used on main page)
+      router.push(`/?id=${id}`, { scroll: false });
     }
   };
 
