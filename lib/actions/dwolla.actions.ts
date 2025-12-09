@@ -4,8 +4,10 @@ import { mockCreateTransfer } from "../providers/mock-transaction";
 
 // Create a Dwolla Funding Source using a Plaid Processor Token
 export const createFundingSource = async (
-  _options: CreateFundingSourceOptions
+  options: CreateFundingSourceOptions
 ) => {
+  // Mock implementation - options would be used with real Dwolla API
+  console.log('Mock funding source created for:', options.fundingSourceName);
   // Return a mock funding source URL
   return `https://api-sandbox.dwolla.com/funding-sources/mock-${Date.now()}`;
 };
@@ -18,13 +20,17 @@ export const createOnDemandAuthorization = async () => {
 };
 
 export const createDwollaCustomer = async (
-  _newCustomer: NewDwollaCustomerParams
+  newCustomer: NewDwollaCustomerParams
 ) => {
+  // Mock implementation - newCustomer would be used with real Dwolla API
+  console.log('Mock customer created for:', newCustomer.email);
   // Return a mock customer URL
   return `https://api-sandbox.dwolla.com/customers/mock-${Date.now()}`;
 };
 
-export const createTransfer = async (_params: TransferParams) => {
+export const createTransfer = async (params: TransferParams) => {
+  // Mock implementation - params would be used with real Dwolla API
+  console.log('Mock transfer created for amount:', params.amount);
   return mockCreateTransfer();
 };
 

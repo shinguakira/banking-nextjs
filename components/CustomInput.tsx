@@ -6,10 +6,10 @@ import { z } from 'zod'
 import {authFormSchema} from '@/lib/utils'
 
 // call shema with sign in type to get all form fields
-const formShema = authFormSchema("sign-up");
+type formShema = ReturnType<typeof authFormSchema>;
 interface CustomInput{
-    control: Control<z.infer<typeof formShema>>,
-    name: FieldPath<z.infer<typeof formShema>>,
+    control: Control<z.infer<formShema>>,
+    name: FieldPath<z.infer<formShema>>,
     label: string,
     placeholder: string
 
