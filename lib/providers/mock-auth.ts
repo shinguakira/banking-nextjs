@@ -102,12 +102,21 @@ export const mockGetLoggedInUser = async () => {
 
     // Check in-memory session
     const session = mockState.getSession();
-    if (!session) {
-      return null;
+    if (session) {
+      const user = mockState.getUserById(session.userId);
+      if (user) {
+        return parseStringify(user);
+      }
     }
 
-    const user = mockState.getUserById(session.userId);
-    return parseStringify(user);
+    // For demo purposes, return the first mock user (demo@banking.com) by default
+    // This allows the app to work without authentication for screenshots
+    const demoUser = mockState.getUserByEmail('demo@banking.com');
+    if (demoUser) {
+      return parseStringify(demoUser);
+    }
+
+    return null;
   } catch (error) {
     console.error("Mock get logged in user error:", error);
     return null;
